@@ -106,6 +106,16 @@ def _infer_hidden_size(lm: nn.Module) -> int:
     raise ValueError("Could not determine hidden_size from model config.")
 
 
+def _autocast_ctx(device: torch.device) -> Any:
+    """Use native bf16 autocast on Ampere+ CUDA so PEFT fp32 LoRA layers run on Tensor Cores."""
+    from contextlib import nullcontext
+
+    if device.type == "cuda":
+        dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+        return torch.amp.autocast("cuda", dtype=dtype)
+    return nullcontext()
+
+
 class AlphaBattlePolicyValueModel(nn.Module):
     """Pretrained LLM backbone (+ optional PEFT LoRA) with 13-way masked action policy + ValueHead."""
 
@@ -138,12 +148,13 @@ class AlphaBattlePolicyValueModel(nn.Module):
         last_token_indices: torch.Tensor | None = None,
     ) -> tuple[torch.Tensor, nn.Module]:
         backbone, lm_head = _extract_backbone_and_lm_head(self.lm)
-        outputs = backbone(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            use_cache=False,
-            return_dict=True,
-        )
+        with _autocast_ctx(input_ids.device):
+            outputs = backbone(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                use_cache=False,
+                return_dict=True,
+            )
         hidden = outputs.last_hidden_state  # (B, L, H)
         if last_token_indices is None:
             last_token_indices = attention_mask.long().sum(dim=1).clamp_min(1) - 1
@@ -165,13 +176,14 @@ class AlphaBattlePolicyValueModel(nn.Module):
         )
 
         # Project ONLY against the 13 action token embeddings (avoids 152K-vocab logits allocation!)
-        action_weight = lm_head.weight.index_select(0, self.action_token_ids)
-        action_bias = (
-            lm_head.bias.index_select(0, self.action_token_ids)
-            if getattr(lm_head, "bias", None) is not None
-            else None
-        )
-        raw_logits = F.linear(h_last, action_weight, action_bias).float()  # (B, 13)
+        with _autocast_ctx(input_ids.device):
+            action_weight = lm_head.weight.index_select(0, self.action_token_ids)
+            action_bias = (
+                lm_head.bias.index_select(0, self.action_token_ids)
+                if getattr(lm_head, "bias", None) is not None
+                else None
+            )
+            raw_logits = F.linear(h_last, action_weight, action_bias).float()  # (B, 13)
         masked_logits = raw_logits.masked_fill(~legal_mask.bool(), -1e9)
 
         value_logit: torch.Tensor | None = None
@@ -250,6 +262,10 @@ def load_base_lm_and_tokenizer(
         target_device = torch.device(device)
         use_cuda = target_device.type == "cuda"
 
+    if use_cuda:
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+
     if dtype is None:
         if use_cuda and torch.cuda.is_bf16_supported():
             dtype = torch.bfloat16
@@ -301,8 +317,15 @@ def attach_lora(
         lm = prepare_model_for_kbit_training(
             lm, use_gradient_checkpointing=gradient_checkpointing
         )
-    elif gradient_checkpointing and hasattr(lm, "gradient_checkpointing_enable"):
-        lm.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+    elif gradient_checkpointing:
+        if hasattr(lm, "activation_checkpointing_enable"):
+            lm.activation_checkpointing_enable(
+                gradient_checkpointing_kwargs={"use_reentrant": False}
+            )
+        elif hasattr(lm, "gradient_checkpointing_enable"):
+            lm.gradient_checkpointing_enable(
+                gradient_checkpointing_kwargs={"use_reentrant": False}
+            )
         if hasattr(lm, "enable_input_require_grads"):
             lm.enable_input_require_grads()
 
@@ -325,6 +348,7 @@ def load_policy_value_checkpoint(
     dtype: torch.dtype | None = None,
     qlora: bool = False,
     is_trainable: bool = False,
+    merge_for_inference: bool = True,
 ) -> tuple[AlphaBattlePolicyValueModel, Any, dict[str, Any]]:
     """Reload a saved AlphaBattlePolicyValueModel (PEFT LoRA + ValueHead + tokenizer)."""
     from peft import PeftModel
@@ -346,6 +370,8 @@ def load_policy_value_checkpoint(
                 tokenizer.pad_token = tokenizer.eos_token
             tokenizer.padding_side = "right"
         lm = PeftModel.from_pretrained(base_lm, adapter_dir, is_trainable=is_trainable)
+        if (not is_trainable) and merge_for_inference and (not qlora) and hasattr(lm, "merge_and_unload"):
+            lm = lm.merge_and_unload()
     else:
         target_device = (
             torch.device("cuda" if torch.cuda.is_available() else "cpu")

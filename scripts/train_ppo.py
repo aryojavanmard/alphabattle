@@ -220,7 +220,13 @@ async def run_ppo_training(args: argparse.Namespace) -> dict[str, Any]:
     # Enable gradient checkpointing on base LM for 12GB VRAM headroom during PPO updates
     if not args.no_grad_checkpointing:
         base_lm = model.lm.get_base_model() if hasattr(model.lm, "get_base_model") else model.lm
-        if hasattr(base_lm, "gradient_checkpointing_enable"):
+        if hasattr(base_lm, "activation_checkpointing_enable"):
+            base_lm.activation_checkpointing_enable(
+                gradient_checkpointing_kwargs={"use_reentrant": False}
+            )
+            if hasattr(base_lm, "enable_input_require_grads"):
+                base_lm.enable_input_require_grads()
+        elif hasattr(base_lm, "gradient_checkpointing_enable"):
             base_lm.gradient_checkpointing_enable(
                 gradient_checkpointing_kwargs={"use_reentrant": False}
             )
