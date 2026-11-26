@@ -87,6 +87,20 @@ def test_load_and_split_by_battle_id_has_zero_leakage(tmp_path: Path) -> None:
     assert len(val_ids) == 4
     assert len(train) + len(val) == len(all_recs)
 
+    # Both perspectives (:p1 and :p2) of the same battle must never split across train/val
+    paired = []
+    for b in range(10):
+        for role, won in (("p1", True), ("p2", False)):
+            paired.append(
+                TrajectoryRecord(f"gen9-{b}:{role}", 1, "s", ("1", "2"), "1", won=won)
+            )
+    p_train, p_val = split_by_battle_id(paired, val_fraction=0.2, seed=13)
+    train_base = {r.battle_id.rsplit(":", 1)[0] for r in p_train}
+    val_base = {r.battle_id.rsplit(":", 1)[0] for r in p_val}
+    assert train_base.isdisjoint(val_base)
+    assert len(val_base) == 2
+    assert len(p_val) == 4
+
 
 def test_tail_preserving_truncation_and_collator() -> None:
     tok = _CharTokenizer()

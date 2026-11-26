@@ -147,8 +147,14 @@ class AlphaBattlePolicyValueModel(nn.Module):
         attention_mask: torch.Tensor,
         last_token_indices: torch.Tensor | None = None,
     ) -> tuple[torch.Tensor, nn.Module]:
+        from contextlib import nullcontext
+
         backbone, lm_head = _extract_backbone_and_lm_head(self.lm)
-        with _autocast_ctx(input_ids.device):
+        backbone_trainable = any(p.requires_grad for p in backbone.parameters())
+        grad_ctx = (
+            nullcontext() if (torch.is_grad_enabled() and backbone_trainable) else torch.no_grad()
+        )
+        with grad_ctx, _autocast_ctx(input_ids.device):
             outputs = backbone(
                 input_ids=input_ids,
                 attention_mask=attention_mask,

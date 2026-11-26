@@ -94,6 +94,13 @@ def load_trajectory_records(
     return records
 
 
+def _base_battle_id(battle_id: str) -> str:
+    """Strip trailing ':p1' / ':p2' POV suffix so both sides of one battle stay in the same split."""
+    if battle_id.endswith((":p1", ":p2")):
+        return battle_id[:-3]
+    return battle_id
+
+
 def split_by_battle_id(
     records: Sequence[TrajectoryRecord],
     *,
@@ -101,7 +108,7 @@ def split_by_battle_id(
     seed: int = 42,
 ) -> tuple[list[TrajectoryRecord], list[TrajectoryRecord]]:
     """Split records into (train, val) strictly grouped by battle_id to prevent leakage."""
-    battle_ids = sorted({r.battle_id for r in records})
+    battle_ids = sorted({_base_battle_id(r.battle_id) for r in records})
     if len(battle_ids) <= 1 or val_fraction <= 0.0:
         return (list(records), [])
 
@@ -115,7 +122,7 @@ def split_by_battle_id(
     train: list[TrajectoryRecord] = []
     val: list[TrajectoryRecord] = []
     for r in records:
-        if r.battle_id in val_set:
+        if _base_battle_id(r.battle_id) in val_set:
             val.append(r)
         else:
             train.append(r)

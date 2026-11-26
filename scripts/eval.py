@@ -124,7 +124,6 @@ async def run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
     )
 
     backend = build_backend(args)
-    extra_backends: list[DecisionBackend] = []
     save_replays: bool | str = str(Path(args.save_replays_dir)) if args.save_replays_dir else False
 
     agent = AlphaBattlePlayer(
@@ -142,42 +141,13 @@ async def run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
     t_start = time.perf_counter()
 
     try:
-        opponent_runs: list[tuple[str, Player]] = []
         for opp_key in args.opponents:
-            opponent_runs.append(
-                build_opponent(
-                    opp_key,
-                    battle_format=args.format,
-                    server_config=server_config,
-                    max_concurrent_battles=args.concurrency,
-                )
-            )
-
-        for ckpt_path in args.opponent_checkpoint or []:
-            from alphabattle.torch_backend import PyTorchPolicyBackend
-
-            opp_backend = PyTorchPolicyBackend.from_checkpoint(
-                ckpt_path,
-                base_model_override=args.base_model,
-                device=args.device,
-                qlora=args.qlora,
-                max_batch_size=args.max_batch_size,
-                max_wait_ms=args.max_wait_ms,
-                temperature=args.temperature,
-            )
-            extra_backends.append(opp_backend)
-            opp_label = f"Ckpt:{Path(ckpt_path).name}"
-            opp_player = AlphaBattlePlayer(
-                backend=opp_backend,
-                account_configuration=AccountConfiguration.generate("EvalCkpt", rand=True),
+            opp_label, opponent = build_opponent(
+                opp_key,
                 battle_format=args.format,
-                server_configuration=server_config,
+                server_config=server_config,
                 max_concurrent_battles=args.concurrency,
-                log_level=logging.WARNING,
             )
-            opponent_runs.append((opp_label, opp_player))
-
-        for opp_label, opponent in opponent_runs:
             agent.reset_battles()
             print(
                 f"\nRunning {args.games} games ({args.format}, concurrency={args.concurrency}) "
@@ -196,10 +166,58 @@ async def run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
                 f"({stats.win_rate * 100:.1f}%, 95% CI "
                 f"[{stats.ci95_low * 100:.1f}%, {stats.ci95_high * 100:.1f}%])"
             )
+
+        for ckpt_path in args.opponent_checkpoint or []:
+            import gc
+            import torch
+            from alphabattle.torch_backend import PyTorchPolicyBackend
+
+            opp_backend = PyTorchPolicyBackend.from_checkpoint(
+                ckpt_path,
+                base_model_override=args.base_model,
+                device=args.device,
+                qlora=args.qlora,
+                max_batch_size=args.max_batch_size,
+                max_wait_ms=args.max_wait_ms,
+                temperature=args.temperature,
+            )
+            opp_label = f"Ckpt:{Path(ckpt_path).name}"
+            opp_player = AlphaBattlePlayer(
+                backend=opp_backend,
+                account_configuration=AccountConfiguration.generate("EvalCkpt", rand=True),
+                battle_format=args.format,
+                server_configuration=server_config,
+                max_concurrent_battles=args.concurrency,
+                log_level=logging.WARNING,
+            )
+            try:
+                agent.reset_battles()
+                print(
+                    f"\nRunning {args.games} games ({args.format}, concurrency={args.concurrency}) "
+                    f"vs {opp_label}..."
+                )
+                t0 = time.perf_counter()
+                await agent.battle_against(opp_player, n_battles=args.games)
+                elapsed = time.perf_counter() - t0
+
+                stats = agent.build_matchup_stats(opp_label)
+                all_stats.append(stats)
+                print(
+                    f"Finished vs {opp_label} in {elapsed:.1f}s "
+                    f"({args.games / max(elapsed, 1e-6):.2f} battles/s): "
+                    f"{stats.wins}-{stats.losses}-{stats.ties} "
+                    f"({stats.win_rate * 100:.1f}%, 95% CI "
+                    f"[{stats.ci95_low * 100:.1f}%, {stats.ci95_high * 100:.1f}%])"
+                )
+            finally:
+                await opp_backend.aclose()
+                del opp_player
+                del opp_backend
+                gc.collect()
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
     finally:
         await backend.aclose()
-        for eb in extra_backends:
-            await eb.aclose()
 
     total_elapsed = time.perf_counter() - t_start
     print("\n=== EVALUATION SUMMARY ===")

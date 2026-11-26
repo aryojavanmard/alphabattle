@@ -316,6 +316,8 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
 
     for epoch in range(1, args.epochs + 1):
         model.train()
+        if args.freeze_policy:
+            model.lm.eval()
         optimizer.zero_grad(set_to_none=True)
         running_loss = 0.0
         running_turns = 0
@@ -411,6 +413,8 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
                             extra_meta={"best_val_metrics": val_metrics},
                         )
                     model.train()
+                    if args.freeze_policy:
+                        model.lm.eval()
 
         # End-of-epoch validation and checkpoint
         if val_loader is not None:

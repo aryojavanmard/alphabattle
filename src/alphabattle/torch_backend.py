@@ -7,7 +7,9 @@ with 100% legal single-token action masking (zero parsing ambiguity).
 from __future__ import annotations
 
 import asyncio
+import threading
 import time
+from contextlib import nullcontext
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -18,6 +20,8 @@ from alphabattle.backends import BackendDecision
 from alphabattle.dataset import NUM_ACTIONS, tokenize_prompt_preserve_tail
 from alphabattle.modeling import AlphaBattlePolicyValueModel, load_policy_value_checkpoint
 from alphabattle.state import ACTION_ID_TO_INDEX, ALL_ACTION_IDS, ActionSpace
+
+_CUDA_INFER_LOCK = threading.Lock()
 
 
 @dataclass
@@ -130,12 +134,13 @@ class PyTorchPolicyBackend:
                 if idx is not None:
                     legal_mask[i, idx] = True
 
-        input_ids = input_ids.to(self.device, non_blocking=True)
-        attention_mask = attention_mask.to(self.device, non_blocking=True)
-        last_indices = last_indices.to(self.device, non_blocking=True)
-        legal_mask = legal_mask.to(self.device, non_blocking=True)
+        lock_ctx = _CUDA_INFER_LOCK if self.device.type == "cuda" else nullcontext()
+        with lock_ctx, torch.inference_mode():
+            input_ids = input_ids.to(self.device, non_blocking=True)
+            attention_mask = attention_mask.to(self.device, non_blocking=True)
+            last_indices = last_indices.to(self.device, non_blocking=True)
+            legal_mask = legal_mask.to(self.device, non_blocking=True)
 
-        with torch.inference_mode():
             out = self.model(
                 input_ids=input_ids,
                 attention_mask=attention_mask,

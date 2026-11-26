@@ -113,3 +113,19 @@ def test_winner_only_and_illusion_filtering() -> None:
 
     illusion_replay = SAMPLE_REPLAY + "\n|replace|p2a: Zoroark|Zoroark, L80, M"
     assert reconstruct_replay_both_sides(illusion_replay, battle_id="r3", min_turns=8) == []
+
+
+def test_hf_data_files_bracket_escaping() -> None:
+    import importlib.util
+    from pathlib import Path
+
+    script_path = Path(__file__).resolve().parents[1] / "scripts" / "build_replay_dataset.py"
+    spec = importlib.util.spec_from_file_location("build_replay_dataset", script_path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    out = mod._normalize_hf_data_files(
+        ["[Gen 9] RANDOMBATTLE_part11.parquet", "data/part-*.parquet"]
+    )
+    assert out == ["[[]Gen 9] RANDOMBATTLE_part11.parquet", "data/part-*.parquet"]

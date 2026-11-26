@@ -119,34 +119,36 @@ python scripts/eval.py `
 
 ### 1. Build High-Elo Gen 9 Random Battle Dataset (Two-Pass Spectator-to-POV)
 ```powershell
+# Saves BOTH sides (~50% win / ~50% loss) so Stage 1.5 Value Head sees balanced outcomes:
 python scripts/build_replay_dataset.py `
-  --hf-dataset milkkarten/pokemon-showdown-replays-merged `
+  --hf-dataset HolidayOugi/pokemon-showdown-replays `
+  --hf-data-files "[Gen 9] RANDOMBATTLE_part11.parquet" "[Gen 9] RANDOMBATTLE_part10.parquet" "[Gen 9] RANDOMBATTLE_part9.parquet" `
   --format-filter randombattle `
   --gen-filter 9 `
-  --min-rating 1550 `
-  --winner-only `
-  --max-turns 250000 `
-  --output data/gen9randbats_1550plus.jsonl `
+  --min-rating 1750 `
+  --max-turns 240000 `
+  --output data/gen9randbats_1750plus_both.jsonl `
   --overwrite
 ```
 
 ### 2. Stage 1 Human SFT (~2h on RTX 3080 12GB)
 ```powershell
 python scripts/train_sft.py `
-  --data data/gen9randbats_1550plus.jsonl `
+  --data data/gen9randbats_1750plus_both.jsonl `
   --base-model Qwen/Qwen3-1.7B-Base `
   --output-dir checkpoints/m3_human_sft `
+  --winner-only `
   --epochs 1 `
   --batch-size 8 `
   --grad-accum 8 `
   --lr 2e-4 `
-  --eval-every 250
+  --eval-every 450
 ```
 
-### 3. Stage 1.5 Value Head Pretraining (~30–45 min, Policy Frozen)
+### 3. Stage 1.5 Value Head Pretraining (~30 min, Policy Frozen, Balanced Win/Loss)
 ```powershell
 python scripts/train_sft.py `
-  --data data/gen9randbats_1550plus.jsonl `
+  --data data/gen9randbats_1750plus_both.jsonl `
   --resume-checkpoint checkpoints/m3_human_sft `
   --output-dir checkpoints/m4_sft_with_critic `
   --freeze-policy `
