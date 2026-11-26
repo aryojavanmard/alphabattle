@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alphabattle"
+version = "0.1.0"
+description = "Post-training a small LLM as a competitive Pokémon Showdown battle agent on 12GB consumer GPUs"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+dependencies = [
+    "poke-env>=0.17.0,<0.18.0",
+    "httpx>=0.27.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+]
+# Install PyTorch CUDA wheels FIRST from https://pytorch.org/get-started/locally/
+# before installing these training dependencies on native Windows.
+train = [
+    "transformers>=4.51.0",
+    "peft>=0.15.0",
+    "trl>=0.16.0",
+    "datasets>=3.0.0",
+    "accelerate>=1.5.0",
+    "bitsandbytes>=0.45.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

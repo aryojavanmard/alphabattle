@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+
+# Local Pokémon Showdown server clone
+pokemon-showdown/
+
+# Experiment outputs, checkpoints, datasets, and replays
+results/
+replays/
+checkpoints/
+data/
+logs/
+*.jsonl
+*.parquet
+*.gguf
+*.safetensors
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
