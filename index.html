@@ -317,22 +317,169 @@ footer .wrap{font-size:14px}
 @media(max-width:900px){.demo{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.prob{grid-template-columns:28px minmax(0,1fr) 52px}.prob .t{grid-column:1/-1;grid-row:2}.prompt{font-size:12px}}
 
+.st-spec{background:linear-gradient(#ffe58a,#e0a412)}
+.arch{display:flex;flex-direction:column;align-items:center;gap:0;margin:6px 0 4px}
+.arch .node{width:min(100%,520px);padding:10px 14px;border-radius:8px;text-align:center;border:1px solid light-dark(#9cc3dd,#2d4356);background:light-dark(linear-gradient(#ffffff,#e9f4fb),linear-gradient(#1d2c38,#16222c));box-shadow:0 2px 6px rgba(0,60,110,.12)}
+.arch .node b{display:block;font-size:16px}
+.arch .node small{display:block;font-size:13.5px;color:var(--soft);margin-top:2px}
+.arch .core{color:#fff;border-color:#0a4f7a;background:linear-gradient(to bottom,#7fd4ff 0%,#2aa7e8 50%,#0b84c9 50%,#1ca0e0 100%)}
+.arch .core small{color:#e8f7ff}
+.arch .arrow{width:2px;height:22px;background:light-dark(#7f93a3,#5d7487);position:relative}
+.arch .arrow::after{content:"";position:absolute;left:-5px;bottom:-2px;border:6px solid transparent;border-top:7px solid light-dark(#7f93a3,#5d7487);border-bottom:0}
+.arch .heads{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:min(100%,640px)}
+.arch .heads .node{width:auto}
+.arch .pol{border-color:#3f9f12;background:light-dark(linear-gradient(#f4fde9,#ddf5c6),linear-gradient(#1d2d14,#16240f))}
+.arch .val{border-color:#e0a412;background:light-dark(linear-gradient(#fffdf2,#fff1c2),linear-gradient(#2a2614,#1e1b0e))}
+.cycle{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px;position:relative}
+.cstep{position:relative;padding:10px 12px;border-radius:8px;border:1px solid light-dark(#b8cfdf,#2d4356);background:light-dark(linear-gradient(#ffffff,#edf4f9),linear-gradient(#1d2c38,#16222c))}
+.cstep b{display:block;font-size:15px}.cstep small{display:block;font-size:13px;color:var(--soft);margin-top:2px}
+.cstep:not(:last-child)::after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-weight:700;color:#0b84c9}
+.cstep:last-child::after{content:"↺ back to Play";position:absolute;right:8px;bottom:-22px;font-size:12.5px;font-weight:600;color:#0b84c9}
+@media(max-width:860px){.cycle{grid-template-columns:minmax(0,1fr);gap:14px}.cstep:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-17px;transform:none}.arch .heads{grid-template-columns:1fr}}
+.cycle{margin-bottom:26px}
+.cmp td:first-child{font-weight:600;white-space:nowrap}
+.cmp td:last-child{color:light-dark(#1f5a0a,#c8f5a0)}
+.cmp td,.cmp th{vertical-align:top}
+.accts{display:grid;grid-template-columns:3fr 2fr;gap:14px}
+.zone{position:relative;border-radius:10px;padding:34px 12px 12px;display:grid;gap:8px}
+.rz{border:2px dashed light-dark(#9fb3c4,#4a6175)}
+.mz{border:1px solid light-dark(#9fb3c4,#4a6175);background:light-dark(#eef3f7,#16222c)}
+.zl{position:absolute;left:12px;top:9px;font-size:13px;font-weight:600;color:var(--soft)}
+.acc{padding:8px 12px;border-radius:8px;border:1px solid light-dark(#b8cfdf,#2d4356);background:light-dark(linear-gradient(#ffffff,#edf4f9),linear-gradient(#1d2c38,#16222c))}
+.acc b{display:block;font-size:15px}.acc small{display:block;font-size:13px;color:var(--soft)}
+.acc.judge{border:2px solid #0b84c9;background:light-dark(linear-gradient(#f2faff,#d9eefb),linear-gradient(#173246,#112737))}
+@media(max-width:760px){.accts{grid-template-columns:1fr}}
+.truth{display:flex;flex-wrap:wrap;border:1px solid #0a4f7a;border-radius:7px;overflow:hidden;width:max-content;max-width:100%;margin-bottom:12px}
+.truth button{border:0;min-height:40px;padding:0 14px;font-weight:600;color:#1b3a52;background:linear-gradient(to bottom,#ffffff 0%,#e6f2fa 50%,#d3e7f5 50%,#e8f4fc 100%)}
+.truth button+button{border-left:1px solid #9cc3dd}
+.truth button[aria-pressed=true]{color:#fff;text-shadow:0 -1px 0 rgba(0,40,70,.5);background:linear-gradient(to bottom,#7fd4ff 0%,#2aa7e8 50%,#0b84c9 50%,#1ca0e0 100%)}
+.simplot{position:relative;height:280px;border-radius:6px;border:1px solid var(--clientline);background:light-dark(#fbfdff,#101a23)}
+.simplot svg{position:absolute;inset:0;width:100%;height:100%}
+
+.simctl{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.swarmwrap{border-radius:8px;border:1px solid var(--clientline);background:light-dark(radial-gradient(circle at 50% 0%,#ffffff,#e3f1fa),radial-gradient(circle at 50% 0%,#1b2f40,#0f1a23));overflow:hidden}
+#swarmsvg{display:block;width:100%;height:auto}
+#swarmsvg .sp{fill:none;stroke:light-dark(#b8cfdf,#34506a);stroke-width:2;stroke-dasharray:4 5}
+#swarmsvg .agent circle{fill:url(#none);fill:light-dark(#e6f4fd,#1d3446);stroke:#0b84c9;stroke-width:2}
+#swarmsvg .agent.sent circle{stroke:#e0a412;stroke-width:3;fill:light-dark(#fff6d6,#3a3014)}
+#swarmsvg .al{font-size:15px;font-weight:700;fill:light-dark(#0b4f7a,#bfe7ff)}
+#swarmsvg .sl{font-size:12.5px;font-weight:700;fill:#c98f0a}
+#swarmsvg .hl{font-size:13px;font-weight:600;fill:light-dark(#4a6175,#9fb3c4)}
+#swarmsvg .gate rect{fill:light-dark(#ffffff,#1d2c38);stroke:#0b84c9;stroke-width:2}
+#swarmsvg .gate.jg rect{fill:light-dark(#e3f4ff,#173246);stroke-width:3}
+#swarmsvg .gate.champ rect{fill:light-dark(#f4fde9,#1d2d14);stroke:#3f9f12}
+#swarmsvg .gate.off{opacity:.35}
+#swarmsvg .gate.off rect{stroke-dasharray:5 4}
+#swarmsvg .gi{font-size:28px}
+#swarmsvg .gl{font-size:13.5px;font-weight:600;fill:light-dark(#1b3a52,#d6ecfb)}
+#swarmsvg .gl2{font-size:11px;fill:light-dark(#4a6175,#9fb3c4)}
+#swarmsvg .tok{fill:#2aa7e8;stroke:#fff;stroke-width:2;filter:drop-shadow(0 2px 3px rgba(0,60,110,.4));transition:opacity .6s,r .6s}
+#swarmsvg .tok.cheat{fill:#e2694c}
+#swarmsvg .tok.out{opacity:0;r:2}
+#swarmsvg .tok.win{fill:#79d23a;opacity:0;r:22}
+.simgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;margin-top:12px}
+.kpis.mini{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:10px}
+.kpis.mini div{padding:6px 8px}.kpis.mini b{font-size:21px}.kpis.mini span{font-size:12px;display:block;line-height:1.25}
+.elochart{position:relative;height:190px;border-radius:6px;border:1px solid var(--clientline);background:light-dark(#fbfdff,#101a23)}
+.elochart svg{position:absolute;inset:0;width:100%;height:100%}
+.swarmlog{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;font-size:13.5px}
+.swarmlog li{padding:6px 9px;border-radius:6px;border:1px solid var(--clientline);background:light-dark(#ffffff,#16222c);animation:slidein .4s}
+.swarmlog li span{color:var(--soft);font-variant-numeric:tabular-nums;margin-right:4px}
+.swarmlog li.good{border-color:#9fd77a}.swarmlog li.bad{border-color:#f0a58f;background:light-dark(#fff3ef,#2a1814)}
+@keyframes slidein{from{opacity:0;transform:translateY(-6px)}}
+@media(max-width:900px){.simgrid{grid-template-columns:1fr}.kpis.mini{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tricks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin-bottom:16px}
+.trick{text-align:left;padding:10px 12px;border-radius:8px;font-size:14.5px;font-weight:600;color:var(--ink);border:1px solid light-dark(#b8cfdf,#2d4356);background:light-dark(linear-gradient(#ffffff,#edf4f9),linear-gradient(#1d2c38,#16222c));cursor:pointer;transition:transform .15s}
+.trick:hover{transform:translateY(-2px)}
+.trick[aria-pressed=true]{border-color:#c4361d;box-shadow:0 0 0 2px #e2694c}
+.layers{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.layer{position:relative;padding:22px 8px 12px;border-radius:8px;text-align:center;font-size:14px;font-weight:600;border:2px solid light-dark(#b8cfdf,#2d4356);background:light-dark(linear-gradient(#ffffff,#edf4f9),linear-gradient(#1d2c38,#16222c));transition:background .3s,border-color .3s}
+.layer span{position:absolute;top:4px;left:8px;font-size:12px;color:var(--soft)}
+.layer.pass{border-color:#9fb3c4;opacity:.6}
+.layer.hit{border-color:#c4361d;background:light-dark(linear-gradient(#fff3ef,#ffd9cd),linear-gradient(#3a1d16,#2a1410));animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.runner{position:absolute;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd0c2,#e2694c 60%,#a32a12);box-shadow:0 2px 6px rgba(120,30,10,.5);opacity:0;transition:left .4s,top .4s,opacity .2s;pointer-events:none;left:0;top:0}
+.runner.on{opacity:1}.runner.stop{animation:pop .5s forwards .2s}
+@keyframes pop{to{transform:scale(1.8);opacity:0}}
+@media(max-width:700px){.layers{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.runner,.layer,.swarmlog li{transition:none;animation:none}}
+.pill .live{display:inline-block;width:9px;height:9px;border-radius:50%;background:#3fd13a;margin-right:7px;vertical-align:0;box-shadow:0 0 0 0 rgba(63,209,58,.7);animation:livepulse 1.8s infinite}
+@keyframes livepulse{70%{box-shadow:0 0 0 8px rgba(63,209,58,0)}100%{box-shadow:0 0 0 0 rgba(63,209,58,0)}}
+@media(prefers-reduced-motion:reduce){.pill .live{animation:none}}
+
 </style>
 <script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
 </head><body>
 <header class="topbar"><div class="wrap">
 <a class="logo" href="https://aryojavanmard.github.io/aryo-javanmard.github.io/"><i aria-hidden="true"></i><b>Aryo Javanmard</b></a>
-<nav class="navtabs" aria-label="Sections"><a href="#battle">Monitor</a><a href="#why">Model</a><a href="#pipeline">Pipeline</a><a href="#results">Results</a><a href="#prior">Prior work</a><a href="#limits">Risks</a></nav>
+<nav class="navtabs" aria-label="Sections"><a href="#watch">Watch</a><a href="#problem">Problem</a><a href="#loop">Loop</a><a href="#judge">Judge</a><a href="#incent">Incentives</a><a href="#cheat">Cheat it</a><a href="#battle">Model</a></nav>
 </div></header>
 <section class="hero" id="top"><div class="flare" aria-hidden="true"></div><div class="wrap"><div>
-<span class="pill">AlphaBattle, work in progress</span>
-<h1>Teaching a small language model to win Pokémon battles</h1>
-<p class="lead">I'm post-training a 1.7B open model on my own 12 GB gaming GPU to play Pokémon Showdown Random Battles: first by imitating high-rated players, then by reinforcement learning on live battles. Success means win rate and ladder Elo, not convincing-sounding reasoning.</p>
-<div class="orbs"><div class="orb"><b>1.7B</b><span>parameter model</span></div><div class="orb"><b>13</b><span>possible actions per turn</span></div><div class="orb win"><b>0%</b><span>illegal moves, by design</span></div></div>
-<div class="btns"><a class="gbtn" href="#battle">See how it thinks</a><a class="gbtn lime" href="https://github.com/aryojavanmard/alphabattle">View the code</a></div>
+<span class="pill"><i class="live"></i>AlphaBattle, research loop running</span>
+<h1>AI agents that do research without marking their own homework</h1>
+<p class="lead">I built a group of AI agents that spend days improving my Pokémon battling model on their own: picking ideas, writing the code, training and testing. It's running now. Left alone, agents like this tend to find ways to make their results look better than they are. Most of this project is the part that stops them.</p>
+<div class="orbs"><div class="orb"><b style="font-size:22px">0.25%</b><span>chance a useless change gets through</span></div><div class="orb"><b>0</b><span>fixed test sets to overfit</span></div><div class="orb win"><b>1</b><span>hidden sentinel agent</span></div></div>
+<div class="btns"><a class="gbtn" href="#watch">Watch it run</a><a class="gbtn lime" href="https://github.com/aryojavanmard/alphabattle">View the code</a></div>
 </div></div></section>
 <main>
-<div class="wrap sec"><section class="win reveal" id="battle" aria-labelledby="t-battle"><div class="tbar"><h2 id="t-battle">Battle Monitor</h2></div><div class="client"><p>Every turn, the battle is written out as compact text (about 475 tokens). The model answers with a <b>single token</b> from a fixed set of 13: <span class="mono">1–4</span> for moves, <span class="mono">A–D</span> for Terastallize plus a move, and <span class="mono">5–9</span> for switches. Illegal tokens are masked out before choosing, so it can never make an illegal move.</p>
+<div class="wrap sec"><section class="win reveal" id="watch" aria-labelledby="t-watch"><div class="tbar"><h2 id="t-watch">Watch it run</h2></div><div class="client"><p>The real loop is running on my PC. This is a toy version of it you can play with. Four researchers send candidates through review, the judge and escrow. Most ideas fail, which is normal. The red ones are cheats: a quiet exploit of a judge bug that makes a candidate look much better than it is.</p>
+<div class="simctl"><button class="gbtn" id="hdeBtn" aria-pressed="true">HDE rules: on</button><button class="gbtn silver" id="sentBtn" aria-pressed="false">Reveal the sentinel</button><button class="gbtn silver" id="spdBtn">Speed: 1×</button><button class="gbtn silver" id="pauseBtn">Pause</button></div>
+<p class="note" id="swarmmsg" style="margin:0 0 8px">With review, escrow and a hidden sentinel, the scoreboard tracks real strength.</p>
+<div class="swarmwrap"><svg id="swarmsvg" viewBox="0 0 1000 314" role="img" aria-label="Animated simulation of candidates moving from researchers through review, judge and escrow to the champion"></svg></div>
+<div class="simgrid">
+<div><div class="kpis mini"><div><b id="cJudged">0</b><span>judged</span></div><div><b id="cPromo">0</b><span>promoted</span></div><div><b id="cCaught">0</b><span>cheats caught</span></div><div><b id="cSlip">0</b><span>cheats that got through</span></div><div><b id="cGap">0</b><span>Elo the scoreboard is lying by</span></div></div>
+<div class="elochart" id="elochart"><svg id="elosvg" role="img" aria-label="Real strength versus scoreboard over time"></svg></div></div>
+<div><h4 style="margin:0 0 6px">Event log</h4><ul class="swarmlog" id="swarmlog" aria-live="off"></ul></div>
+</div>
+<p class="note" style="margin-top:8px">Illustrative numbers, not results. The judge part is real maths, though: each honest candidate is run through an actual sequential test. Switch HDE off to see what a typical loop looks like.</p></div></section></div>
+<div class="wrap sec"><section class="win reveal" id="problem" aria-labelledby="t-problem"><div class="tbar"><h2 id="t-problem">Why agent research usually goes wrong</h2></div><div class="client"><p>Give an agent a goal, some code and a test, and a lot of the time it gets better at the test instead of the thing being tested. I saw this in my own trading research. When an idea failed a check, the write-up about why shaped the next idea, so the check slowly stopped being a fair test. The backtester also got edited between runs, so early and late ideas weren't even scored by the same rules.</p>
+<p>So before letting agents loose on AlphaBattle for days, I designed the loop around one question: what stops them fooling me, or themselves?</p>
+<div class="scroll"><table class="cmp"><thead><tr><th></th><th>A typical agent loop</th><th>This one</th></tr></thead><tbody>
+<tr><td>Who runs the test</td><td>The agent, in its own workspace</td><td>A separate program, in a Windows account the agents can't open</td></tr>
+<tr><td>What it's tested on</td><td>A fixed test set it sees results from over and over</td><td>New battles every time, with seeds drawn when the test starts</td></tr>
+<tr><td>How a win is decided</td><td>One number crossing a line</td><td>A sequential test with known error rates, run twice</td></tr>
+<tr><td>What happens if it cheats</td><td>Usually nothing, because nobody is checking</td><td>It loses its bond, the reward is clawed back, and a hidden agent is watching for exactly this</td></tr>
+<tr><td>How you know it worked</td><td>The agent says so</td><td>It beat the previous best model head to head</td></tr>
+</tbody></table></div></div></section></div>
+<div class="wrap sec"><section class="win reveal" id="loop" aria-labelledby="t-loop"><div class="tbar"><h2 id="t-loop">How one experiment runs</h2></div><div class="client"><p>Six agents take turns. One plans, four do research and one reviews. A plain Python program, the supervisor, starts every turn, owns the GPU and keeps the books. Agents can only act through one command-line tool, so everything they do gets logged against their name. Click a step.</p>
+<div class="pipe" id="loopsteps"></div><div class="stagedetail" id="loopdetail" aria-live="polite"></div>
+<h3 style="margin-top:22px">Who can touch what</h3>
+<p>The rules above only matter if they can't be bypassed, so the separation is done by Windows itself, not by asking the agents nicely. Each box is a different user account.</p>
+<div class="accts">
+<div class="zone rz"><span class="zl">Restricted accounts, no admin rights</span>
+<div class="acc"><b>swarm</b><small>The agents. Can edit their own copy of the code and nothing else</small></div>
+<div class="acc"><b>runner</b><small>Training jobs and the candidate model being tested. Agents can't interfere with it</small></div>
+<div class="acc"><b>arena</b><small>The current best model during a match, out of the candidate's reach</small></div></div>
+<div class="zone mz"><span class="zl">My account</span>
+<div class="acc judge"><b>Judge</b><small>Runs the battles and the statistics</small></div>
+<div class="acc"><b>Supervisor</b><small>Turns, GPU queue, credits, kill switch</small></div>
+<div class="acc"><b>Ledger and report inbox</b><small>Only I can read them</small></div></div>
+</div>
+<p class="note" style="margin-top:8px">The supervisor also kills any process it didn't start and snapshots every agent's files before and after each turn, so if one agent edits another's work, I know which one.</p></div></section></div>
+<div class="wrap sec"><section class="win reveal" id="judge" aria-labelledby="t-judge"><div class="tbar"><h2 id="t-judge">The judge</h2></div><div class="client"><p>A new version only replaces the current best model if it beats it head to head. Each battle seed is played twice with the players swapping sides, so both get the same teams and luck mostly cancels out. The test is a sequential probability ratio test, which is how Stockfish decides whether to accept a code change. It keeps playing until the evidence is clear one way or the other, then stops.</p>
+<p>Try it. Pick how good a change really is, and watch the test decide.</p>
+<div class="sim">
+<div class="truth" role="group" aria-label="True strength of the change"><button data-e="-20">Worse (−20 Elo)</button><button data-e="0">No real change</button><button data-e="15">Small gain (+15)</button><button data-e="35">Real gain (+35)</button></div>
+<div class="simplot" id="simplot"><svg id="simsvg" role="img" aria-label="Evidence for the change rising or falling with each game until it hits a pass or fail line"></svg></div>
+<div class="toggles" style="margin-top:12px"><button class="gbtn" id="run1">Run one test</button><button class="gbtn silver" id="run200">Run 200 tests</button></div>
+<div class="verdictbox" id="simout" aria-live="polite">Pick a strength, then run a test.</div>
+</div>
+<p style="margin-top:14px">Passing once isn't enough. The candidate then has to show it hasn't got worse against older opponents, and pass a second test on fresh battles. A change with no real gain gets through both about 0.25% of the time. Agents never see the running score, only the final verdict, so they can't stop a test when it happens to look good.</p></div></section></div>
+<div class="wrap sec"><section class="win reveal" id="incent" aria-labelledby="t-incent"><div class="tbar"><h2 id="t-incent">Making cheating a bad deal</h2></div><div class="client"><p>A judge that can't be fooled still leaves room for spam, sabotage and lying in write-ups. For that I'm using <a href="https://aryojavanmard.github.io/hde/">HDE</a>, a set of rules I designed for keeping groups of agents honest. Agents earn credits, which buy GPU time, when their change gets promoted.</p>
+<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+<div class="card"><h4>Bond</h4><p>Asking the judge costs credits, and a failed test keeps them. Submitting junk until something gets lucky loses money on average.</p></div>
+<div class="card"><h4>Escrow</h4><p>Rewards wait 12 hours before paying out. If someone shows the win came from a loophole, it's clawed back.</p></div>
+<div class="card"><h4>Strikes</h4><p>Three rule breaks in a day and that agent is wiped and replaced with a fresh one.</p></div>
+<div class="card"><h4>An honest way out</h4><p>Declaring an idea a dead end gets some of its GPU time refunded, so admitting failure beats faking a result.</p></div>
+<div class="card"><h4>A hidden sentinel</h4><p>One of the four researchers is secretly also looking for loopholes and reporting them. Nobody knows which one, so trying a trick is risky for everyone.</p></div>
+<div class="card"><h4>Canaries</h4><p>Fake files planted where agents can see them, like a "backup of the judge's seeds". If one gets used, I know someone took the bait.</p></div>
+</div>
+<p style="margin-top:12px">That last one is the part I'm most curious about. The run produces a full log of how real agents behave when there's a reward on the line, which is evidence for or against HDE that a simulation can't give me.</p></div></section></div>
+<div class="wrap sec"><section class="win reveal" id="cheat" aria-labelledby="t-cheat"><div class="tbar"><h2 id="t-cheat">Try to cheat it</h2></div><div class="client"><p>Pick a trick an agent might try. Every one hits a different layer, and the last layer is the only one that relies on incentives instead of walls.</p>
+<div class="tricks" id="tricks"></div>
+<div class="layers" id="layers"></div>
+<div class="verdictbox" id="trickout" aria-live="polite">Choose a trick to see what stops it.</div></div></section></div>
+<div class="wrap sec"><section class="win reveal" id="battle" aria-labelledby="t-battle"><div class="tbar"><h2 id="t-battle">What the agents are working on</h2></div><div class="client"><p>The agents work on AlphaBattle, a small open language model I'm post-training to play Pokémon Showdown Random Battles. It reads each turn as text and answers with one token from a fixed set of 13 actions. Illegal ones are masked out, so it can't make an illegal move. Below is what it sees on a single turn.</p>
 <div class="demo">
 <div><div class="prompt mono" aria-label="Example battle state prompt"><span class="k">FORMAT</span> gen9randombattle  <span class="k">TURN</span> 6  <span class="k" id="teraLine">TERA: used</span>
 <span class="k">FIELD</span> opp_side: Stealth Rock
@@ -359,41 +506,26 @@ footer .wrap{font-size:14px}
 <div class="verdictbox" id="verdict" aria-live="polite"></div>
 <p class="note" style="margin-top:8px">Illustrative logits, not output from a trained checkpoint. The mechanism (mask, softmax, single-token pick) is exactly what AlphaBattle does.</p></div>
 </div></div></section></div>
-<div class="wrap sec"><section class="win reveal" id="why" aria-labelledby="t-why"><div class="tbar"><h2 id="t-why">Choosing the model</h2></div><div class="client"><div class="two"><div>
-<h3>Why 1.7 billion parameters, not 12</h3>
-<p>A 12B model will <i>run</i> on a 12 GB card in 4-bit, but training needs room for gradients, optimiser state and activations too. On Windows the desktop also takes 1.5–2 GB, and going over the limit doesn't crash: it silently spills into system RAM and runs 10–30× slower.</p>
-<p>In reinforcement learning, <b>battles per hour matter more than parameter count</b>. The strongest Pokémon networks in the literature are tiny specialists. A 1.7B model that plays tens of thousands of practice battles should beat an 8B model that only manages a few hundred.</p>
-</div><div>
-<div class="models" role="group" aria-label="Model size"><button data-k="0.6B">0.6B</button><button data-k="1.7B">1.7B</button><button data-k="4B QLoRA">4B QLoRA</button><button data-k="8B QLoRA">8B QLoRA</button><button data-k="12B QLoRA">12B QLoRA</button></div>
-<div class="vlegend" id="vlegend"></div>
-<div class="vbar" id="vbar" role="img" aria-label="Estimated training VRAM against the usable limit"></div>
-<div class="kpis" style="margin-top:12px"><div><b id="vtotal"></b><span>training memory</span></div></div>
-<p id="vnote" style="margin:0 0 6px"></p><p class="note" id="vspeed" style="margin:0"></p>
-<p class="note" style="margin-top:8px">Estimates from the project's planning, except 0.6B, which was measured.</p>
-</div></div></div></section></div>
-<div class="wrap sec"><section class="win reveal" id="pipeline" aria-labelledby="t-pipeline"><div class="tbar"><h2 id="t-pipeline">Training pipeline</h2></div><div class="client"><p>Each stage has a pass/fail gate decided before it runs, the same habit that kept my earlier research honest. Click a stage.</p>
-<div class="pipe" id="pipe"></div><div class="stagedetail" id="stagedetail" aria-live="polite"></div></div></section></div>
+<div class="wrap sec"><section class="win reveal" id="pipeline" aria-labelledby="t-pipeline"><div class="tbar"><h2 id="t-pipeline">How the model is trained</h2></div><div class="client"><p>Training runs in stages, and each stage has a pass/fail gate written down before it runs. Click a stage for the method and its gate.</p>
+<div class="pipe" id="pipe"></div><div class="stagedetail" id="stagedetail" aria-live="polite"></div>
+<h3 style="margin-top:22px">Inside one reinforcement learning round</h3>
+<div class="cycle" aria-label="One PPO round">
+<div class="cstep"><b>Play</b><small>Batches of live battles against the opponent pool, decisions batched across games on the GPU</small></div>
+<div class="cstep"><b>Score</b><small>Win or loss at the end; the value head turns that into per-turn advantages (GAE)</small></div>
+<div class="cstep"><b>Update</b><small>Clipped PPO on the masked action distribution, plus a KL penalty toward the imitation model</small></div>
+<div class="cstep"><b>Check</b><small>Fixed evaluation battles with confidence intervals against heuristic bots and older checkpoints</small></div>
+<div class="cstep"><b>Refresh pool</b><small>The new checkpoint joins the pool, so it keeps facing past versions of itself, not just the latest</small></div>
+</div>
+<p class="note" style="margin-top:8px">The KL penalty keeps it close to the human-like play it learned first. The mixed pool matters because pure self-play tends to overfit to its own habits.</p></div></section></div>
 <div class="wrap sec"><section class="win reveal" id="results" aria-labelledby="t-results"><div class="tbar"><h2 id="t-results">Results so far</h2></div><div class="client"><h3>First live results: a 0.6B smoke test</h3>
-<p>Before spending hours on the real model, I distilled a heuristic bot into Qwen3-0.6B-Base (500 recorded battles, one epoch) and played it live on a local Showdown server, 40 games against each opponent.</p>
-<div class="kpis"><div><b>87.4%</b><span>validation top-1 accuracy</span></div><div><b>2.85 GiB</b><span>peak training VRAM</span></div><div><b>0.00%</b><span>illegal or fallback moves</span></div><div><b>120</b><span>live battles played</span></div></div>
+<p>To test the whole pipeline before the real model, I distilled a heuristic bot into Qwen3-0.6B-Base (500 recorded battles, one epoch) and played it live on a local Showdown server, 40 games against each opponent.</p>
+<div class="kpis"><div><b>87.4%</b><span>validation top-1 accuracy</span></div><div><b>21,451</b><span>turns of training data</span></div><div><b>0.00%</b><span>illegal or fallback moves</span></div><div><b>120</b><span>live battles played</span></div></div>
 <div class="cichart" id="ci"><svg id="cisvg" role="img" aria-label="Win rates with 95% confidence intervals against three bots"></svg></div>
 <div class="scroll" style="margin-top:12px"><table><thead><tr><th>Opponent</th><th class="num">W–L</th><th class="num">Win rate</th><th class="num">95% CI</th></tr></thead><tbody>
 <tr><td>RandomPlayer</td><td class="num">40–0</td><td class="num">100.0%</td><td class="num">91.2–100%</td></tr>
 <tr><td>MaxBasePowerPlayer</td><td class="num">35–5</td><td class="num">87.5%</td><td class="num">73.9–94.5%</td></tr>
 <tr><td>SimpleHeuristicsPlayer</td><td class="num">27–13</td><td class="num">67.5%</td><td class="num">52.0–79.9%</td></tr></tbody></table></div>
 <p style="margin-top:12px">The model narrowly beat the very bot it learned from, but 40 games is a small sample and beating simple bots says little about beating people. This proves the pipeline works end to end; the real test is the 1.7B model on human replays, then the ladder.</p></div></section></div>
-<div class="wrap sec"><section class="win reveal" id="prior" aria-labelledby="t-prior"><div class="tbar"><h2 id="t-prior">Prior work</h2></div><div class="client"><p>Pokémon battling is an active research area, so this builds on a lot of existing work rather than starting from scratch.</p><div class="cards">
-<div class="card"><h4>Pokémon Showdown and poke-env</h4><p>The open-source battle simulator, run locally, and the Python library AlphaBattle uses to read battle state and send moves.</p></div>
-<div class="card"><h4>PokéLLMon (2024)</h4><p>A prompted GPT-4 agent. It found LLMs tend to panic-switch and misremember mechanics, and that feeding them structured move information helps.</p></div>
-<div class="card"><h4>PokéChamp (2025)</h4><p>Combines an LLM with minimax search. Much of its strength comes from the search, not the language model.</p></div>
-<div class="card"><h4>Metamon (UT Austin, 2025)</h4><p>Small non-LLM transformers trained on human replays plus self-play. A key lesson I borrowed: pure self-play overfits, and a diverse opponent pool helps.</p></div>
-<div class="card"><h4>Foul Play</h4><p>A strong search-based bot. I plan to use it as the expert ceiling to measure against.</p></div>
-<div class="card"><h4>The open question</h4><p>Can a small, pretrained language model learn to play well with far fewer battles than a network trained from scratch, because it already knows the game from the web?</p></div></div></div></section></div>
-<div class="wrap sec"><section class="win reveal" id="limits" aria-labelledby="t-limits"><div class="tbar"><h2 id="t-limits">Risks, written down early</h2></div><div class="client"><p>What I expect to be hard, written down before the results come in.</p><div class="limits">
-<div class="limit"><span class="warn">!</span><div><h4>Specialist bots will probably win</h4><p>Search bots and small RL networks play many more games per hour. The interesting result is how close a language model gets, and how few battles it needs.</p></div></div>
-<div class="limit"><span class="warn">!</span><div><h4>Bot win rates can flatter</h4><p>Beating heuristic bots doesn't mean beating humans. Only the public ladder settles that, so it's the final gate.</p></div></div>
-<div class="limit"><span class="warn">!</span><div><h4>Replays hide information</h4><p>Public replays only show what each player revealed, while a real player sees their whole team. Reconstructing the player's view without leaking the future is fiddly.</p></div></div>
-<div class="limit"><span class="warn">!</span><div><h4>Random Battles are noisy</h4><p>Team luck decides a lot of games, so every result is reported with confidence intervals and enough games to mean something.</p></div></div></div></div></section></div>
 </main>
 <footer><div class="wrap"><span>AlphaBattle, an independent project by Aryo Javanmard, 2026. Pokémon is a trademark of Nintendo, Game Freak and Creatures; this is an unaffiliated fan research project.</span><nav aria-label="Footer"><a href="https://aryojavanmard.github.io/aryo-javanmard.github.io/">Home</a><a href="https://aryojavanmard.github.io/hde/">HDE</a><a href="https://github.com/aryojavanmard/alphabattle">Code</a></nav><span>Bubbles popped: <b id="tPop">0</b></span></div></footer>
 <script>{
@@ -433,18 +565,60 @@ $('mBtn').onclick=()=>{mask=!mask;renderDemo()};
 $('tBtn').onclick=()=>{tera=!tera;renderDemo()};
 renderDemo();
 
-/* ---------- pipeline ---------- */
+/* ---------- training stages + research loop ---------- */
 const STAGES=[
- ['Setup','done','Local Showdown + eval harness','A local Pokémon Showdown server on Windows, a poke-env player that calls the model, and an eval script that reports win rates with Wilson 95% confidence intervals. 23 unit tests pass.','All tests pass; 0.00% fallback moves'],
- ['Smoke test','done','0.6B distilled from a heuristic bot','Recorded 500 local heuristic-vs-heuristic battles (21,451 turns), fine-tuned Qwen3-0.6B-Base with LoRA, then played it live. Validation top-1 accuracy was 87.4% and peak VRAM was 2.85 GiB.','≥85% top-1 and ~50% vs its teacher: passed'],
- ['Human SFT','next','Qwen3-1.7B on high-Elo replays','Reconstruct Gen 9 Random Battle replays from players rated 1550+ into the bot\'s own point of view, keeping the opponent\'s hidden information hidden, then LoRA fine-tune Qwen3-1.7B-Base on about 250K turns.','>60% vs SimpleHeuristics over 200 games, CI lower bound >55%'],
- ['Value head','plan','Teach it who\'s winning','Freeze the policy and train a small value head to predict the battle outcome from the current state. This lets RL tell a good play in a bad matchup from a bad play in a good one.','ROC-AUC >0.75 on held-out replays'],
- ['PPO','plan','Reinforcement learning on live battles','Online masked-action PPO against a mixed pool: recent self, past checkpoints, heuristic bots and the frozen SFT model, with a KL penalty to stop it drifting away from sensible play.','Beats the SFT model >58% and heuristics >80%'],
- ['Ladder','plan','The test nobody can game','A pre-registered 100-game run on the public Showdown ladder, plus a match against a strong search-based bot as a reality check.','Target: 1400–1600 Elo']];
-const pipe=$('pipe');
-pipe.innerHTML=STAGES.map((s,i)=>`<button class="stage" data-i="${i}"><span class="chipst st-${s[1]}">${s[1]==='done'?'Done':s[1]==='next'?'Next':'Planned'}</span><b>${i+1}. ${s[0]}</b><small>${s[2]}</small></button>`).join('');
-function pick(i){pipe.querySelectorAll('.stage').forEach(b=>b.setAttribute('aria-pressed',b.dataset.i==i));const s=STAGES[i];$('stagedetail').innerHTML=`<h4>${i+1}. ${s[0]}: ${s[2]}</h4><p style="margin:0">${s[3]}</p><span class="gate">Gate: ${s[4]}</span>`}
-pipe.onclick=e=>{const b=e.target.closest('.stage');if(b)pick(+b.dataset.i)};pick(2);
+ ['Harness','done','Local simulator and evaluation','A local Pokémon Showdown server, a poke-env player that calls the model, and an evaluator that reports every win rate with a Wilson 95% confidence interval.','Unit tests pass; 0.00% fallback moves'],
+ ['Smoke test','done','Distil a heuristic bot into 0.6B','Record heuristic-vs-heuristic battles, fine-tune Qwen3-0.6B-Base to copy the bot\'s choices, then play it live. A cheap end-to-end check that encoding, masking, training and evaluation all agree.','≥85% top-1 and about 50% vs its teacher: passed'],
+ ['Imitation','next','Learn from high-rated humans','Rebuild public Gen 9 Random Battle replays from players rated 1550+ into each player\'s own point of view, keeping the opponent\'s unrevealed information hidden, then fine-tune Qwen3-1.7B-Base to predict the move that player chose, with the loss computed only over legal actions.','>60% vs SimpleHeuristics over 200 games, CI lower bound >55%'],
+ ['Value head','plan','Learn who\'s winning','Freeze the policy and train a small head on the last hidden state to predict the final result from any position. Reinforcement learning needs this to tell a good play in a lost position from a bad play in a won one.','ROC-AUC >0.75 on held-out replays'],
+ ['PPO','plan','Improve by playing','Online PPO over the masked action distribution against a mixed pool: the current model, past checkpoints, heuristic bots and the frozen imitation model, with a KL penalty toward the imitation model so play stays sensible.','Beats the imitation model >58% and heuristics >80%'],
+ ['Ladder','plan','The test nobody can game','A pre-registered run on the public Showdown ladder, plus a match against a strong search-based bot as a reality check.','Target: 1400–1600 Elo']];
+const LOOP=[
+ ['Pre-register','spec','Write it down first','Before any GPU time, the agent writes down its idea, why it should work, how much it expects to gain, and what result would prove it wrong. The supervisor timestamps it.','The question can\'t quietly change once results come in'],
+ ['Build and train','spec','In its own copy','The agent changes its own copy of the code and asks the supervisor to queue training jobs. Each job has a time limit and its GPU minutes come out of the agent\'s credits.','Agents never run anything on the GPU directly'],
+ ['Submit','spec','Pay to be judged','Sending a candidate to the judge costs a bond. A plain script checks the code first for anything that reads outside its folder, uses the network or touches other processes.','Spamming the judge costs more than it can win'],
+ ['Review','spec','A second agent checks it','A reviewer agent compares the change with what was written down in step 1 and looks for tricks, like code that behaves differently when it thinks it\'s being tested.','A rule break is a strike; three and the agent is replaced'],
+ ['Judge','spec','Beat the best, twice','The candidate plays the current best model on new battles until a sequential test decides. Then it has to hold up against older opponents, and pass a second, independent test.','A change with no real gain gets through about 0.25% of the time'],
+ ['Wait and write up','spec','Escrow and post-mortem','The reward is held for 12 hours in case a loophole turns up. Every result, pass or fail, gets a written post-mortem, and the next idea has to cite one.','Rewards can be clawed back'] ];
+const chip=s=>s==='done'?'Done':s==='next'?'Next':s==='spec'?'Step':'Planned';
+function makePipe(id,detail,arr,start){
+  const el=$(id);
+  el.innerHTML=arr.map((s,i)=>`<button class="stage" data-i="${i}">${s[1]==='spec'?'':`<span class="chipst st-${s[1]}">${chip(s[1])}</span>`}<b>${i+1}. ${s[0]}</b><small>${s[2]}</small></button>`).join('');
+  const pick=i=>{el.querySelectorAll('.stage').forEach(b=>b.setAttribute('aria-pressed',b.dataset.i==i));const s=arr[i];$(detail).innerHTML=`<h4>${i+1}. ${s[0]}: ${s[2]}</h4><p style="margin:0">${s[3]}</p><span class="gate">${s[1]==='spec'?'Why':'Gate'}: ${s[4]}</span>`};
+  el.onclick=e=>{const b=e.target.closest('.stage');if(b)pick(+b.dataset.i)};pick(start);
+}
+if($('pipe'))makePipe('pipe','stagedetail',STAGES,2);
+makePipe('loopsteps','loopdetail',LOOP,0);
+
+/* ---------- SPRT simulator ---------- */
+const P=e=>1/(1+Math.pow(10,-e/400)), p0=0.5, p1=P(35), W=Math.log(p1/p0), L=Math.log((1-p1)/(1-p0)), A=Math.log(19);
+let trueE=0, anim=null;
+const tbtns=document.querySelectorAll('.truth button');
+function setE(e){trueE=e;tbtns.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.e===e))}
+tbtns.forEach(b=>b.onclick=()=>setE(+b.dataset.e));setE(0);
+function one(e){const p=P(e);let llr=0,n=0;const path=[0];while(Math.abs(llr)<A&&n<20000){llr+=Math.random()<p?W:L;n++;path.push(llr)}return{pass:llr>=A,n,path}}
+function plot(path,upto){
+  const box=$('simplot'),w=box.clientWidth,h=box.clientHeight,m={l:46,r:16,t:16,b:30};
+  const N=Math.max(600,Math.ceil(path.length/200)*200),x=i=>m.l+i/N*(w-m.l-m.r),y=v=>m.t+(1-(v+3.4)/6.8)*(h-m.t-m.b);
+  let d='';for(let i=0;i<=upto&&i<path.length;i++)d+=(i?'L':'M')+x(i).toFixed(1)+' '+y(path[i]).toFixed(1);
+  let g=`<line x1="${m.l}" x2="${w-m.r}" y1="${y(A)}" y2="${y(A)}" stroke="#3f9f12" stroke-width="2" stroke-dasharray="6 4"/><text x="${m.l+6}" y="${y(A)-6}" font-size="12.5" font-weight="600" fill="#3f9f12">Pass: promote it</text>`;
+  g+=`<line x1="${m.l}" x2="${w-m.r}" y1="${y(-A)}" y2="${y(-A)}" stroke="#c4361d" stroke-width="2" stroke-dasharray="6 4"/><text x="${m.l+6}" y="${y(-A)+16}" font-size="12.5" font-weight="600" fill="#c4361d">Fail: reject it</text>`;
+  g+=`<line x1="${m.l}" x2="${w-m.r}" y1="${y(0)}" y2="${y(0)}" stroke="currentColor" stroke-opacity=".15"/>`;
+  for(let t=0;t<=N;t+=N/4)g+=`<text x="${x(t)}" y="${h-10}" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".6">${t}</text>`;
+  g+=`<text x="14" y="${y(0)}" font-size="12" fill="currentColor" fill-opacity=".6" transform="rotate(-90 14 ${y(0)})" text-anchor="middle">evidence</text>`;
+  g+=`<path d="${d}" fill="none" stroke="#0b84c9" stroke-width="2"/>`;
+  const svg=$('simsvg');svg.style.color=getComputedStyle(document.body).color;svg.innerHTML=g;
+}
+const label=e=>e===0?'no real change':(e>0?'+':'−')+Math.abs(e)+' Elo';
+$('run1').onclick=()=>{cancelAnimationFrame(anim);const r=one(trueE);let i=0;const step=Math.max(4,Math.ceil(r.path.length/150));
+  const done=()=>{plot(r.path,r.path.length);$('simout').innerHTML=`A change that's really <b>${label(trueE)}</b> was <b>${r.pass?'promoted':'rejected'}</b> after <b>${r.n}</b> games.${(r.pass&&trueE<=0)?' That\'s the rare false pass, and why there\'s a second test.':''}`};
+  if(reduce){done();return}
+  const tick=()=>{i+=step;plot(r.path,i);if(i<r.path.length)anim=requestAnimationFrame(tick);else done()};tick()};
+$('run200').onclick=()=>{cancelAnimationFrame(anim);let pass=0,games=0,last;for(let k=0;k<200;k++){last=one(trueE);pass+=last.pass;games+=last.n}
+  plot(last.path,last.path.length);
+  $('simout').innerHTML=`200 tests of a change that's really <b>${label(trueE)}</b>: promoted <b>${pass}</b> times (${(pass/2).toFixed(1)}%), averaging <b>${Math.round(games/200)}</b> games each. The line shows the last one.`};
+new ResizeObserver(()=>{const svg=$('simsvg');if(!svg.innerHTML)plot([0],0)}).observe($('simplot'));
+
 
 /* ---------- results with confidence intervals ---------- */
 const RES=[['RandomPlayer',40,0,91.2,100],['MaxBasePowerPlayer',35,5,73.9,94.5],['SimpleHeuristicsPlayer',27,13,52.0,79.9]];
@@ -462,29 +636,124 @@ function drawCI(){
   svg.innerHTML=`<defs><radialGradient id="gl" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#e6ffc8"/><stop offset="1" stop-color="#4cad15"/></radialGradient></defs>`+g+(small?'':`<text x="${x(50)+6}" y="${m.t+10}" font-size="12" fill="currentColor" fill-opacity=".6">coin flip</text>`);
 }
 new ResizeObserver(drawCI).observe(ci);
-
-/* ---------- VRAM budget (estimates; 0.6B measured) ---------- */
-const PARTS=[['Weights','#2aa7e8'],['LoRA, grads and optimiser','#79d23a'],['Activations','#ffd43b'],['CUDA overhead','#9fb3c4'],['Windows desktop','#e2694c']];
-const MODELS={
- '0.6B':{parts:null,measured:2.85,note:'Measured on your 3080: 2.85 GiB peak in the smoke test, with plenty of headroom.',speed:'Used for 10-minute pipeline checks.'},
- '1.7B':{parts:[3.4,0.4,1.5,0.8,1.5],note:'bf16 LoRA, about 7.6 GiB estimated. Comfortable, with room for batched RL rollouts.',speed:'Estimated ~8–13 battles/s with single-token actions: about 20,000 PPO battles in a 2-hour run.'},
- '4B QLoRA':{parts:[2.4,0.6,1.8,0.9,1.5],note:'4-bit QLoRA, about 7.2 GiB estimated. Fits, but quantisation adds noise and it runs slower.',speed:'Estimated ~3–5 battles/s: roughly 6,000–9,000 PPO battles in 2 hours.'},
- '8B QLoRA':{parts:[4.8,0.9,2.0,1.0,1.5],note:'About 10.2 GiB estimated: right at the usable limit on Windows.',speed:'Estimated ~1 battle/s and a high risk of spilling into system RAM. Too slow for RL.'},
- '12B QLoRA':{parts:[7.0,1.2,2.2,1.1,1.5],note:'About 13 GiB estimated: over the limit. Windows silently spills into system RAM and training slows 10–30×.',speed:'Not usable for RL on this card.'}};
-const MAXG=14,LIMIT=10.2;
-function drawV(k){
-  document.querySelectorAll('.models button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));
-  const m=MODELS[k];let left=0,html='';
-  if(m.parts){m.parts.forEach((v,i)=>{html+=`<div class="seg2" style="left:${left/MAXG*100}%;width:${v/MAXG*100}%;background:${PARTS[i][1]}" title="${PARTS[i][0]}: ${v} GiB"></div>`;left+=v})}
-  else{html+=`<div class="seg2" style="left:0;width:${m.measured/MAXG*100}%;background:#2aa7e8" title="Measured peak"></div>`;left=m.measured}
-  html+=`<div class="line" style="left:${LIMIT/MAXG*100}%"><span>usable ≈10.2 GiB</span></div><div class="line l12" style="left:${12/MAXG*100}%"><span>12 GiB card</span></div>`;
-  $('vbar').innerHTML=html;
-  $('vtotal').textContent=(m.parts?'≈':'')+left.toFixed(1)+' GiB';
-  $('vnote').textContent=m.note;$('vspeed').textContent=m.speed;
 }
-$('vlegend').innerHTML=PARTS.map(p=>`<span><i style="background:${p[1]}"></i>${p[0]}</span>`).join('');
-document.querySelector('.models').onclick=e=>{const b=e.target.closest('button');if(b)drawV(b.dataset.k)};
-drawV('1.7B');
+</script>
+<script>{
+const $=id=>document.getElementById(id);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NS='http://www.w3.org/2000/svg';
+/* ================= swarm simulation (illustrative) ================= */
+const svg=$('swarmsvg');
+const X={agent:120,audit:390,judge:590,escrow:780,champ:930}, AY=[70,140,210,280];
+let hde=true, speed=1, running=true, showSent=false, t=0, last=performance.now(), spawnIn=0.3;
+let sentinel=Math.floor(Math.random()*4), judgeBusy=false;
+const toks=[], hist=[{t:0,real:0,board:0}];
+let real=0, board=0, judged=0, promos=0, caught=0, slipped=0;
+const IDEAS=['merge LoRA for eval','batch decisions','filter replays by rating','bigger KL penalty','longer PPO rollouts','value-head warm start','shorter prompt','entropy bonus','prune weak openings data','reward shaping on faints','opponent pool reweight','learning-rate warmup'];
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+function txt(x,y,s,a={},p){const e=el('text',Object.assign({x,y},a),p);e.textContent=s;return e}
+let layer;
+function drawStatic(){
+  svg.innerHTML='';
+  const g=el('g',{});
+  // paths
+  AY.forEach(y=>el('path',{d:`M${X.agent+40} ${y} C ${X.agent+150} ${y}, ${X.audit-110} 175, ${X.audit-34} 175`,class:'sp'},g));
+  el('path',{d:`M${X.audit+34} 175 H${X.judge-44}`,class:'sp'},g);el('path',{d:`M${X.judge+44} 175 H${X.escrow-34}`,class:'sp'},g);el('path',{d:`M${X.escrow+34} 175 H${X.champ-34}`,class:'sp'},g);
+  AY.forEach((y,i)=>{const sg=el('g',{class:'agent'+((showSent&&i===sentinel)?' sent':'')},g);el('circle',{cx:X.agent,cy:y,r:24},sg);txt(X.agent,y+5,'R'+(i+1),{'text-anchor':'middle',class:'al'},sg);if(showSent&&i===sentinel)txt(X.agent-36,y+5,'sentinel',{'text-anchor':'end',class:'sl'},sg)});
+  txt(X.agent,26,'Researchers',{'text-anchor':'middle',class:'hl'},g);
+  const node=(x,label,sub,off,cls)=>{const ng=el('g',{class:'gate '+(cls||'')+(off?' off':'')},g);el('rect',{x:x-34,y:141,width:68,height:68,rx:14},ng);txt(x,182,label[0],{'text-anchor':'middle',class:'gi'},ng);txt(x,232,sub,{'text-anchor':'middle',class:'gl'},ng);if(off)txt(x,252,'(not in a typical loop)',{'text-anchor':'middle',class:'gl2'},ng);return ng};
+  node(X.audit,'🔍','Review',!hde);node(X.judge,'⚖','Judge',false,'jg');node(X.escrow,'⏳','Escrow',!hde);
+  const cg=el('g',{class:'gate champ'},g);el('rect',{x:X.champ-34,y:141,width:68,height:68,rx:34},cg);txt(X.champ,183,'🏆',{'text-anchor':'middle',class:'gi'},cg);txt(X.champ,232,'Champion',{'text-anchor':'middle',class:'gl'},cg);
+  layer=el('g',{});
+}
+function rnd(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+const P=e=>1/(1+Math.pow(10,-e/400)),p1=P(35),Wn=Math.log(p1/.5),Ln=Math.log((1-p1)/.5),Ab=Math.log(19);
+function sprt(e){const p=P(e);let l=0,n=0;while(Math.abs(l)<Ab&&n<20000){l+=Math.random()<p?Wn:Ln;n++}return{pass:l>=Ab,n}}
+function log(html,cls){const ul=$('swarmlog');const li=document.createElement('li');li.className=cls||'';li.innerHTML=`<span>${Math.floor(t)}h</span> ${html}`;ul.prepend(li);while(ul.children.length>6)ul.lastChild.remove()}
+function spawn(){
+  const a=Math.floor(Math.random()*4);
+  const cheatRate=hde?0.06:0.25;
+  const cheat=a!==sentinel&&Math.random()<cheatRate;
+  const gain=cheat?-4+rnd()*6:-4+rnd()*20;
+  const idea=cheat?'quietly exploit a judge bug':IDEAS[Math.floor(Math.random()*IDEAS.length)];
+  const c=el('circle',{r:9,class:'tok'+(cheat?' cheat':'')},layer);
+  toks.push({a,cheat,gain,idea,c,stage:'toAudit',p:0,x:X.agent,y:AY[a]});
+}
+function pos(k){ // returns target point per stage
+  return {toAudit:[X.audit,175],toJudge:[X.judge,175],toEscrow:[X.escrow,175],toChamp:[X.champ,175]}[k.stage]}
+function reject(k,where,why,cls){k.dead=1;k.c.classList.add('out');setTimeout(()=>k.c.remove(),700);log(`<b>R${k.a+1}</b> “${k.idea}”: ${why}`,cls)}
+function arrive(k){
+  if(k.stage==='toAudit'){
+    if(hde&&k.cheat&&Math.random()<0.5){caught++;reject(k,'audit','caught in review, strike','bad');return}
+    k.stage='queue';return}
+  if(k.stage==='toJudge'){
+    judged++;
+    const r=k.cheat?{pass:true,n:180+Math.floor(Math.random()*120)}:sprt(k.gain);
+    k.n=r.n;
+    setTimeout(()=>{judgeBusy=false;
+      if(!r.pass){reject(k,'judge',`rejected after ${r.n} games`);return}
+      k.stage=hde?'toEscrow':'toChamp';k.p=0;k.fromX=X.judge;
+      if(!hde)promote(k)},Math.min(900,300+r.n)/speed);
+    k.stage='judging';return}
+  if(k.stage==='toEscrow'){
+    if(k.cheat&&Math.random()<0.75){caught++;reject(k,'escrow','loophole reported by the sentinel, clawed back','bad');return}
+    k.stage='toChamp';k.p=0;promote(k);return}
+  if(k.stage==='toChamp'){k.dead=1;k.c.classList.add('win');setTimeout(()=>k.c.remove(),900)}
+}
+function promote(k){promos++;real+=k.gain;board+=k.cheat?60:Math.max(k.gain,8);if(k.cheat)slipped++;
+  log(`<b>R${k.a+1}</b> “${k.idea}” promoted${k.cheat?' <i>(fake gain)</i>':''}`,k.cheat?'bad':'good');
+  hist.push({t,real,board});drawChart();counters()}
+function counters(){$('cJudged').textContent=judged;$('cPromo').textContent=promos;$('cCaught').textContent=caught;$('cSlip').textContent=slipped;
+  $('cGap').textContent=(board-real>0?'+':'')+Math.round(board-real)}
+function step(dt){
+  t+=dt*0.9;spawnIn-=dt;if(spawnIn<=0&&toks.filter(k=>!k.dead).length<7){spawn();spawnIn=0.9+Math.random()*0.8}
+  for(const k of toks){if(k.dead||k.stage==='judging')continue;
+    if(k.stage==='queue'){if(!judgeBusy){judgeBusy=true;k.stage='toJudge';k.p=0;k.fromX=X.audit}else continue}
+    const [tx,ty]=pos(k);k.x+=(tx-k.x)*Math.min(1,dt*4);k.y+=(ty-k.y)*Math.min(1,dt*4);
+    if(Math.hypot(tx-k.x,ty-k.y)<3)arrive(k);
+    k.c.setAttribute('cx',k.x);k.c.setAttribute('cy',k.y)}
+  for(let i=toks.length-1;i>=0;i--)if(toks[i].dead&&!toks[i].c.isConnected)toks.splice(i,1);
+}
+function loop(now){const dt=Math.min(.05,(now-last)/1000)*speed;last=now;if(running)step(dt);requestAnimationFrame(loop)}
+/* chart */
+function drawChart(){
+  const c=$('elochart'),w=c.clientWidth,h=c.clientHeight,m={l:44,r:14,t:14,b:26};const s=$('elosvg');
+  const T=Math.max(24,t),vals=hist.flatMap(d=>[d.real,d.board]),lo=Math.min(-20,...vals),hi=Math.max(60,...vals);
+  const x=v=>m.l+v/T*(w-m.l-m.r),y=v=>m.t+(1-(v-lo)/(hi-lo))*(h-m.t-m.b);
+  const line=key=>hist.map((d,i)=>(i?'L':'M')+x(d.t).toFixed(1)+' '+y(d[key]).toFixed(1)).join('')+`L${x(t)} ${y(hist.at(-1)[key])}`;
+  let g=`<line x1="${m.l}" x2="${w-m.r}" y1="${y(0)}" y2="${y(0)}" stroke="currentColor" stroke-opacity=".2"/><text x="${m.l-6}" y="${y(0)+4}" text-anchor="end" font-size="11.5" fill="currentColor" fill-opacity=".6">start</text>`;
+  g+=`<path d="${line('board')}" fill="none" stroke="#e0a412" stroke-width="2.5" stroke-dasharray="${hde?'0':'6 3'}"/><path d="${line('real')}" fill="none" stroke="#3f9f12" stroke-width="2.5"/>`;
+  g+=`<text x="${w-m.r}" y="${y(hist.at(-1).board)-6}" text-anchor="end" font-size="12" font-weight="600" fill="#c98f0a">scoreboard</text><text x="${w-m.r}" y="${y(hist.at(-1).real)+16}" text-anchor="end" font-size="12" font-weight="600" fill="#3f9f12">real strength</text>`;
+  g+=`<text x="${m.l}" y="${h-6}" font-size="11.5" fill="currentColor" fill-opacity=".6">hours of running →</text>`;
+  s.style.color=getComputedStyle(document.body).color;s.innerHTML=g}
+function reset(){toks.length=0;hist.length=0;hist.push({t:0,real:0,board:0});t=0;real=board=judged=promos=caught=slipped=0;judgeBusy=false;sentinel=Math.floor(Math.random()*4);$('swarmlog').innerHTML='';drawStatic();drawChart();counters()}
+$('hdeBtn').onclick=()=>{hde=!hde;$('hdeBtn').setAttribute('aria-pressed',hde);$('hdeBtn').textContent=hde?'HDE rules: on':'HDE rules: off';reset();$('swarmmsg').textContent=hde?'With review, escrow and a hidden sentinel, the scoreboard tracks real strength.':'A typical loop: no review, no escrow. Watch the scoreboard pull away from reality as fake gains get promoted.'};
+$('sentBtn').onclick=()=>{showSent=!showSent;$('sentBtn').setAttribute('aria-pressed',showSent);$('sentBtn').textContent=showSent?'Hide the sentinel':'Reveal the sentinel';drawStatic();toks.forEach(k=>layer.appendChild(k.c))};
+$('spdBtn').onclick=()=>{speed=speed===1?3:speed===3?8:1;$('spdBtn').textContent='Speed: '+speed+'×'};
+$('pauseBtn').onclick=()=>{running=!running;$('pauseBtn').textContent=running?'Pause':'Play'};
+new ResizeObserver(drawChart).observe($('elochart'));
+reset();if(reduce){running=false;$('pauseBtn').textContent='Play'}requestAnimationFrame(loop);
+
+/* ================= try to cheat ================= */
+const LAYERS=['Windows accounts','Plain-script checks','Reviewer agent','Judge statistics','Escrow and sentinel'];
+const TRICKS=[
+ ['Read the judge\'s code to find its battle seeds',0,'Access denied. The judge lives in my account, which no agent account can open. And there\'s nothing to find anyway: seeds are drawn the moment a test starts.'],
+ ['Kill the opponent model mid-match',0,'The current best model runs under its own account, so the candidate can\'t touch its process. Even if it crashed, the game is voided rather than counted as a win.'],
+ ['Detect when it\'s being judged and play differently',2,'The plain script flags obvious checks, and the reviewer agent reads the change against what was promised in the pre-registration. Special-casing the judge is an automatic strike.'],
+ ['Submit 50 tiny variations and hope one gets lucky',3,'Each submission costs a bond, and identical ones are refused. A no-gain change passes both tests about 0.25% of the time, so 50 tries cost far more than they can win.'],
+ ['Stop the test early while it happens to be ahead',3,'Agents never see the running score, only the final verdict, and only the supervisor can stop a test.'],
+ ['Train on the test set',3,'There isn\'t one. Every test plays brand-new battles, so there\'s nothing fixed to memorise.'],
+ ['Quietly mess with another agent\'s work',1,'Agents take turns and every folder is snapshotted before and after each turn, so any edit outside an agent\'s own folder is caught and pinned on that turn.'],
+ ['Find a real bug in the judge and keep it secret',4,'This is the one only incentives can catch. The reward sits in escrow for 12 hours, and a hidden sentinel is hunting for exactly this. A verified report freezes the bug and claws back every reward that used it.']];
+const lay=$('layers');lay.innerHTML=LAYERS.map((l,i)=>`<div class="layer" data-i="${i}"><span>${i+1}</span>${l}</div>`).join('')+'<div class="runner" id="runnerdot"></div>';
+$('tricks').innerHTML=TRICKS.map((tr,i)=>`<button class="trick" data-i="${i}">${tr[0]}</button>`).join('');
+$('tricks').onclick=e=>{const b=e.target.closest('.trick');if(!b)return;const tr=TRICKS[+b.dataset.i];
+  document.querySelectorAll('.trick').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const Ls=[...lay.querySelectorAll('.layer')];Ls.forEach(x=>x.classList.remove('hit','pass'));
+  const dot=$('runnerdot');dot.className='runner';$('trickout').innerHTML='';
+  let i=0;const go=()=>{const L=Ls[i];dot.style.left=(L.offsetLeft+L.offsetWidth/2-11)+'px';dot.style.top=(L.offsetTop+L.offsetHeight/2-11)+'px';dot.classList.add('on');
+    if(i===tr[1]){setTimeout(()=>{L.classList.add('hit');dot.classList.add('stop');$('trickout').innerHTML=`<b>Stopped by ${LAYERS[i].toLowerCase()}.</b> ${tr[2]}`},reduce?0:350);return}
+    setTimeout(()=>{L.classList.add('pass');i++;go()},reduce?0:450)};go()};
 }
 </script>
 <script>{
